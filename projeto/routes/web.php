@@ -15,6 +15,5 @@ Route::get('/', function () {
     return view('index');
 });
 
-Route::get('/teste/{nome}', function($nome){
-    return "Ola! ".$nome;
-});
+Route::get('/produtos', 'ControllerProduto@index');
+Route::get('/categorias', 'ControllerCategoria@index');
