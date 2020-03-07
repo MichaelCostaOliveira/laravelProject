@@ -25,7 +25,13 @@ class ControllerCategoria extends Controller
      */
     public function create()
     {
-        return view('novacategoria');
+        $name = 'Categoria';
+        $action = 'categorias';
+        return view('novacategoria', [
+            'name' => $name,
+            'action' =>$action
+        ]);
+
     }
 
     /**

@@ -2,7 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Categoria;
+use App\Produto;
 use Illuminate\Http\Request;
+
 
 class ControllerProduto extends Controller
 {
@@ -13,7 +16,10 @@ class ControllerProduto extends Controller
      */
     public function index()
     {
-        return view('produtos');
+        $prods = Produto::select('categorias.nome as nomeCategoria','produtos.id', 'produtos.nome','estoque' ,'categorias.id as categoriaId')
+            ->join('categorias', 'produtos.categoria_id', '=', 'categorias.id')
+            ->get();
+        return view('produtos', compact('prods'));
     }
 
     /**
@@ -23,7 +29,15 @@ class ControllerProduto extends Controller
      */
     public function create()
     {
-        //
+        $name = 'Produto';
+        $action = 'produtos';
+        $idCategorias = Categoria::all();
+        return view('novacategoria', [
+            'name' => $name,
+            'action' =>$action,
+            'idCategorias' =>$idCategorias
+        ]);
+
     }
 
     /**
@@ -34,7 +48,14 @@ class ControllerProduto extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $prod = new Produto();
+        $prod->nome = $request->input('nomeProduto');
+        $prod->estoque = $request->input('estoqueProduto');
+        $prod->preco = $request->input('precoProduto');
+        $prod->categoria_id = $request->input('idCategoria');
+
+        $prod->save();
+        return redirect('/produtos');
     }
 
     /**
